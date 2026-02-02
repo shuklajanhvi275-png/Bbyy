@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>My Forever Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+.box{
+  background:rgba(255,255,255,0.2);
+  margin:15px;
+  padding:20px;
+  border-radius:20px;
+  opacity:0;
+  transform:translateY(30px);
+  transition: all 1s ease;
+}
+
+.box.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+button,input{
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  font-size:16px;
+  margin-top:10px;
+}
+
+button{background:#ff2e63;color:white;}
+input{width:70%;}
+
+.gift{
+  font-size:40px;
+  animation:bounce 1.5s infinite;
+  cursor:pointer;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+
+.message{display:none;margin-top:10px;}
+
+.heart{
+  position:fixed;
+  bottom:-10px;
+  animation:float 6s linear infinite;
+}
+
+@keyframes float{
+  to{transform:translateY(-100vh);opacity:0;}
+}
+
+canvas{
+  position:fixed;
+  top:0;left:0;
+  pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💘 My Forever Love 💘</h1>
+<p>For my bbyy, bubuu, puchkuu, sweetheart, hubbiee, kuchupuchuu 💞</p>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c4f8a0e715.mp3?filename=romantic-112614.mp3" type="audio/mpeg">
+</audio>
+<button onclick="toggleMusic()">🔊 Music On/Off</button>
+
+<!-- PAGE 1 -->
+<div class="box" id="login1">
+  <h2>🔐 Secret Page 1</h2>
+  <p>Hint: Your cutest nickname 💕</p>
+  <input type="password" id="p1">
+  <br>
+  <button onclick="unlock1()">Unlock 💖</button>
+</div>
+
+<div id="page1" style="display:none">
+  <div class="box">
+    <h2>🎁 Valentine Surprises</h2>
+    <div class="gift" onclick="show('m1')">🎁</div>
+    <div id="m1" class="message">You are the reason my heart smiles everyday ❤️</div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="box">
+    <h2>🔐 Secret Page 2</h2>
+    <p>Hint: What I lovingly call you 🥰</p>
+    <input type="password" id="p2">
+    <br>
+    <button onclick="unlock2()">Unlock 💞</button>
+  </div>
+</div>
+
+<div id="page2" style="display:none">
+  <div class="box">
+    <h2>💌 Love Letter</h2>
+    <p id="letter"></p>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="box">
+    <h2>🔐 Final Secret Page</h2>
+    <p>Hint: My future 💍</p>
+    <input type="password" id="p3">
+    <br>
+    <button onclick="unlock3()">Unlock Forever ❤️</button>
+  </div>
+</div>
+
+<div id="page3" style="display:none">
+  <div class="box">
+    <h2>❤️ Valentine’s Day ❤️</h2>
+    <p id="valentine-msg"></p>
+  </div>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+/* MUSIC CONTROL */
+const music=document.getElementById("bgMusic");
+function toggleMusic(){
+  if(music.paused){music.play();}
+  else{music.pause();}
+}
+
+/* PASSWORDS */
+function unlock1(){
+  if(p1.value==="puchkuu"){
+    page1.style.display="block";
+    animateBoxes();
+    // Play music when first page unlocked
+    if(music.paused) music.play();
+  } else alert("Wrong password 💔");
+}
+
+function unlock2(){
+  if(p2.value==="bbyy"){
+    page2.style.display="block";
+    animateBoxes();
+    typeLetter();
+    if(music.paused) music.play();
+  } else alert("Try again bubuu 😘");
+}
+
+function unlock3(){
+  let today=new Date();
+  if(today.getMonth()==1 && today.getDate()==14){ // Feb 14
+    if(p3.value==="hubbiee"){
+      page3.style.display="block";
+      document.getElementById("valentine-msg").innerHTML="You are my today, my tomorrow, my always 💕";
+      fireworks();
+      animateBoxes();
+      if(music.paused) music.play();
+    } else alert("Almost there sweetheart 💞");
+  } else{
+    alert("This page unlocks only on Valentine's Day! 💖");
+  }
+}
+
+function show(id){document.getElementById(id).style.display="block";}
+
+/* Floating hearts */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=20+Math.random()*20+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},500);
+
+/* Typing Love Letter */
+const text=`My dearest love,
+From the moment you came into my life,
+everything felt warmer, brighter, happier.
+You are my safe place, my smile, my forever.
+I promise to love you in every universe ❤️`;
+
+let i=0;
+function typeLetter(){
+  if(i<text.length){
+    letter.innerHTML+=text.charAt(i);
+    i++;
+    setTimeout(typeLetter,50);
+  }
+}
+
+/* Fireworks */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+let particles=[];
+function fireworks(){
+  for(let i=0;i<180;i++){
+    particles.push({
+      x:canvas.width/2,
+      y:canvas.height/2,
+      dx:(Math.random()-0.5)*8,
+      dy:(Math.random()-0.5)*8,
+      life:100
+    });
+  }
+}
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.dx;
+    p.y+=p.dy;
+    p.life--;
+    ctx.fillStyle="rgba(255,255,255,0.8)";
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,2,0,Math.PI*2);
+    ctx.fill();
+    if(p.life<=0)particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* Scroll Animations */
+function animateBoxes(){
+  const boxes=document.querySelectorAll('.box');
+  boxes.forEach(box=>{
+    box.classList.add('show');
+  });
+}
+window.addEventListener('scroll',()=>{
+  const boxes=document.querySelectorAll('.box');
+  boxes.forEach(box=>{
+    const boxTop=box.getBoundingClientRect().top;
+    const trigger=window.innerHeight-100;
+    if(boxTop<trigger){box.classList.add('show');}
+  });
+});
+</script>
+
+</body>
+</html>
